@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(36, 23, 23, 0.1);
+            background-color: coral;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .weather-info {
+            margin-top: 20px;
+        }
+        .weather{
+            background-color: #007bff;
+        }
+    </style>
+</head>
+<body  class="weather">
+    <div class="container">
+        <h2 >Weather App</h2>
+        <input type="text" id="location" placeholder="Enter location">
+        <button onclick="getWeather()">Get Weather</button>
+        <div class="weather-info" id="weather"></div>
+    </div>
+
+    <script>
+        function getWeather() {
+            let location = document.getElementById('location').value;
+            let apiKey = '7d76a834d08c4f64953142327253101';
+            let url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=yes`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    let weatherDiv = document.getElementById('weather');
+                    weatherDiv.innerHTML = `
+                        <h3>${data.location.name}, ${data.location.country}</h3>
+                        <p>Temperature: ${data.current.temp_c}°C</p>
+                        <p>Condition: ${data.current.condition.text}</p>
+                        <img src="${data.current.condition.icon}" alt="weather icon">
+                    `;
+                })
+                .catch(error => {
+                    alert('Invalid location or API error.');
+                    console.error(error);
+                });
+        }
+    </script>
+</body>
+</html>
